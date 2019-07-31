@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: servicio-oauth
+  cloud:
+    config:
+    #Con esto se configura la uri del servidor de configuraciones
+      uri:
+      - http://localhost:8888
+#Esta parte sirve para configurar el actuator y refrescar 
+#las configuraciones propias que tengamos en los archivos 
+#de propiedades. (Leer documentación). Una vez configurado esto
+#se deberá hacer una petición "POST" al endpoint 
+#${servidor-donde-esta-el-micrservicio}:${puerto-donde-esta-el-micrservicio}/actuator/refresh
+#Y eso hará que las configuraciones que se hayan cambiado se refresquen
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+        - "*"
