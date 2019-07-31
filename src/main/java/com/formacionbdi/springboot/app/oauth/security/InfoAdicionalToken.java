@@ -1,0 +1,40 @@
+package com.formacionbdi.springboot.app.oauth.security;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.stereotype.Component;
+
+import com.formacionbdi.springboot.app.oauth.services.IUsuarioService;
+import com.formacionbdi.springboot.app.usuarios.commons.models.entity.Usuario;
+
+/**
+ * Con esta clase se agregara información adicional al token que enviamos.
+ * Practicamente lo que queramos.
+ *
+ */
+@Component
+public class InfoAdicionalToken implements TokenEnhancer {
+
+	@Autowired
+	IUsuarioService usuarioService;
+
+	@Override
+	public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
+		Map<String, Object> info = new HashMap<String, Object>();
+		Usuario usuario = usuarioService.findByUsername(authentication.getName());
+		info.put("nombre", usuario.getNombre());
+		info.put("apellido", usuario.getApellido());
+		info.put("correo", usuario.getEmail());
+		DefaultOAuth2AccessToken defaultOAuth2AccessToken = (DefaultOAuth2AccessToken) accessToken;
+		defaultOAuth2AccessToken.setAdditionalInformation(info);
+
+		return defaultOAuth2AccessToken;
+	}
+
+}

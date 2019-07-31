@@ -19,14 +19,14 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class UsuarioService implements UserDetailsService {
+public class UsuarioService implements UserDetailsService, IUsuarioService{
 
 	@Autowired
 	private UsuarioFeignClient client;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Usuario usuario = client.findByUsername(username);
+		Usuario usuario = findByUsername(username);
 
 		if (usuario == null) {
 			log.error("Error en el login, no existe el usuario '{}' en el sistema", username);
@@ -44,6 +44,12 @@ public class UsuarioService implements UserDetailsService {
 				.collect(Collectors.toList());
 		log.info("Usuario Autenticado {}", username);
 		return new User(username, usuario.getPassword(), usuario.getEnabled(), true, true, true, authorities);
+	}
+
+	@Override
+	public Usuario findByUsername(String username) {
+		Usuario usuario = client.findByUsername(username);
+		return usuario;
 	}
 
 }
