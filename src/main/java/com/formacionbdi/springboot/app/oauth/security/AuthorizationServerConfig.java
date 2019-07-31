@@ -29,12 +29,30 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 	@Override
 	public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-		super.configure(security);
+		security
+		//permiso para la ruta donde se genera el token
+		.tokenKeyAccess("permitAll()")
+		//permiso para la ruta donde se verifica el token
+		.checkTokenAccess("isAuthenticated()");
 	}
 
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-		super.configure(clients);
+		clients
+		.inMemory().withClient("frontendapp")
+		.secret(passwordEncoder.encode("12345"))
+		.scopes("read", "write")
+		.authorizedGrantTypes("password", "refresh_token")
+		.accessTokenValiditySeconds(3600)
+		.refreshTokenValiditySeconds(3600);/*.
+		 and()
+		.withClient("frontendapp")
+		.secret(passwordEncoder.encode("12345"))
+		.scopes("read", "write")
+		.authorizedGrantTypes("password", "refresh_token")
+		.accessTokenValiditySeconds(3600)
+		.refreshTokenValiditySeconds(3600)*/
+		
 	}
 
 	@Override
