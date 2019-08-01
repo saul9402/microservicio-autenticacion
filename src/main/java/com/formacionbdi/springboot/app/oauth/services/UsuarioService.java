@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.formacionbdi.springboot.app.oauth.clients.UsuarioFeignClient;
 import com.formacionbdi.springboot.app.usuarios.commons.models.entity.Usuario;
 
+import brave.Tracer;
 import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,6 +25,9 @@ public class UsuarioService implements UserDetailsService, IUsuarioService {
 
 	@Autowired
 	private UsuarioFeignClient client;
+	
+	@Autowired
+	private Tracer tracer;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -40,8 +44,10 @@ public class UsuarioService implements UserDetailsService, IUsuarioService {
 			return new User(username, usuario.getPassword(), usuario.getEnabled(), true, true, true, authorities);
 
 		} catch (FeignException e) {
+			String erroMessage = e.getMessage();
 			log.error("Error en el login, no existe el usuario '{}' en el sistema", username);
-
+			//con esto agregas un tag que quieras exportar en zipkin para poder verlo en la interfaz gráfica
+			tracer.currentSpan().tag("error.mensaje", erroMessage);
 			throw new UsernameNotFoundException(
 					"Error en el login, no existe el usuario '" + username + "' en el sistema");
 		}
