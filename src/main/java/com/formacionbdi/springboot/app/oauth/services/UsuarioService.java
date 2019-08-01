@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class UsuarioService implements UserDetailsService, IUsuarioService{
+public class UsuarioService implements UserDetailsService, IUsuarioService {
 
 	@Autowired
 	private UsuarioFeignClient client;
@@ -34,14 +34,9 @@ public class UsuarioService implements UserDetailsService, IUsuarioService{
 					"Error en el login, no existe el usuario '" + username + "' en el sistema");
 		}
 
-		List<GrantedAuthority> authorities = 
-				usuario.getRoles()
-				.stream()
-				.map(role -> {
-					return new SimpleGrantedAuthority(role.getNombre());
-				})
-				.peek(authority -> log.info("Role: {}", authority.getAuthority()))
-				.collect(Collectors.toList());
+		List<GrantedAuthority> authorities = usuario.getRoles().stream().map(role -> {
+			return new SimpleGrantedAuthority(role.getNombre());
+		}).peek(authority -> log.info("Role: {}", authority.getAuthority())).collect(Collectors.toList());
 		log.info("Usuario Autenticado {}", username);
 		return new User(username, usuario.getPassword(), usuario.getEnabled(), true, true, true, authorities);
 	}
@@ -50,6 +45,11 @@ public class UsuarioService implements UserDetailsService, IUsuarioService{
 	public Usuario findByUsername(String username) {
 		Usuario usuario = client.findByUsername(username);
 		return usuario;
+	}
+
+	@Override
+	public Usuario update(Usuario usuario, Long id) {
+		return client.update(usuario, id);
 	}
 
 }
