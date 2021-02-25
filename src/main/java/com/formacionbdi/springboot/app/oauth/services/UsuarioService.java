@@ -31,11 +31,11 @@ public class UsuarioService implements UserDetailsService, IUsuarioService {
 		try {
 			Usuario usuario = findByUsername(username);
 
-			List<GrantedAuthority> authorities = usuario.getRoles().stream().map(role -> {
-				return new SimpleGrantedAuthority(role.getNombre());
-			}).peek(authority -> log.info("Role: {}", authority.getAuthority())).collect(Collectors.toList());
+			List<GrantedAuthority> authorities = usuario.getRoles().stream()
+					.map(role -> new SimpleGrantedAuthority(role.getNombre()))
+					.peek(authority -> log.info("Role: {}", authority.getAuthority())).collect(Collectors.toList());
 
-			log.info("Usuario Autenticado {}", username);
+			log.info("Usuario autenticado: {}", username);
 
 			return new User(username, usuario.getPassword(), usuario.getEnabled(), true, true, true, authorities);
 
