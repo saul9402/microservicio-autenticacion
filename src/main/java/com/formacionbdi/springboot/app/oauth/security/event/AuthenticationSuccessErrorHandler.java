@@ -14,6 +14,12 @@ import brave.Tracer;
 import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * 
+ * @author saul_ documentacion para zipkin
+ *         https://github.com/openzipkin/zipkin/tree/master/zipkin-server
+ *
+ */
 @Component
 @Slf4j
 public class AuthenticationSuccessErrorHandler implements AuthenticationEventPublisher {
@@ -21,6 +27,9 @@ public class AuthenticationSuccessErrorHandler implements AuthenticationEventPub
 	@Autowired
 	private IUsuarioService usuarioService;
 
+	/**
+	 * Queda pendiente que los mensajes se envien a traves de rabbitmq
+	 */
 	@Autowired
 	private Tracer tracer;
 
