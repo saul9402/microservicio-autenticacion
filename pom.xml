@@ -51,8 +51,14 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-sleuth</artifactId>
+			<artifactId>spring-cloud-starter-zipkin</artifactId>
 		</dependency>
+		<!-- Se elimina la dependencia de sleuth ya que se está agregando la de 
+			zipkin y esta ultima ya tiene integrado sleuth -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.springframework.cloud</groupId> -->
+		<!-- <artifactId>spring-cloud-starter-sleuth</artifactId> -->
+		<!-- </dependency> -->
 
 		<dependency>
 			<groupId>com.formacionbdi.springboot.app.usuarios.commons</groupId>
