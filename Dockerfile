@@ -3,7 +3,7 @@ FROM openjdk:14.0
 #Se agrega volumen que usa tomcat para guardar log o archivos temporales
 VOLUME /tmp
 #Se expone el puerto que usará la aplicación
-EXPOSE 8761
+EXPOSE 9100
 #Se agrega el archivo jar desde el target hacia una ruta (con nombre) en el docker
 ADD ./target/springboot-servicio-oauth-0.0.1-SNAPSHOT.jar oauth-server.jar
 #En esta parte le dices el comando que se ejecutará cuando se ejecute el dockerfile (con sintáxis de docker)
