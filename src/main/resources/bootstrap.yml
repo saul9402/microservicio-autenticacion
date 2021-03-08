@@ -6,6 +6,8 @@ spring:
     #Con esto se configura la uri del servidor de configuraciones
       uri:
       - http://localhost:8888
+     #con esto configuras la rama de donde va tomar los valores
+      label: development-configuration
 #Esta parte sirve para configurar el actuator y refrescar 
 #las configuraciones propias que tengamos en los archivos 
 #de propiedades. (Leer documentación). Una vez configurado esto
